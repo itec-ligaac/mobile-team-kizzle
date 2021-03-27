@@ -1,0 +1,7 @@
+{
+  "name": "ardency_clinet",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
