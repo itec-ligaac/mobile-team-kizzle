@@ -10,7 +10,7 @@ export class AuthService {
 
   constructor(private nativeStorage: NativeStorage,private router: Router) { }
 
-  public name:BehaviorSubject<string>;
+  public name = new BehaviorSubject<string>(null);
 
   storeJWT(jwt:any){
     this.nativeStorage.setItem('jwt',jwt);
@@ -29,13 +29,15 @@ export class AuthService {
 
       http.onreadystatechange = ()=> {
           if(http.readyState == 4 && http.status == 200) {
+              console.log(JSON.parse(http.responseText));
               if(JSON.parse(http.responseText)){
-                alert(this.name);
-                this.name.next(JSON.parse(http.responseText).name);
+                this.name.next(JSON.parse(http.responseText).data.name);
               }
           }
       }
       http.withCredentials = true;
+      http.send();
+
     });
     
   }
