@@ -4,13 +4,16 @@ const mongoose = require('mongoose')
 
 module.exports = {
    log: async(req, res) => {
-        const {lat, long} = req.body
+        const {lat, long, city} = req.body
+        if(city != req.user.city) {
+            return res.status(200).json({message: "Cities do not match!", error: true})
+        }
         let interest = req.user.interest
-        console.log(interest)
         const location = new locationModel({
             lat,
             long, 
-            interest
+            interest,
+            city
         })
         await location.save()
 

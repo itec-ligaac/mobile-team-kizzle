@@ -22,5 +22,10 @@ module.exports = {
         })
         await interest.save()
         return res.status(200).json({message: "Interest saved!", error: false})
+    },
+    getAll: async(req, res) => {
+        interestModel.find({}, function(err, obj) {
+            
+        })
     }
 }

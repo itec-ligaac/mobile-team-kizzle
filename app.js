@@ -49,4 +49,5 @@ app.get('/api/user/me', tokenValidator, userController.me)
 app.post('/api/location/log', tokenValidator, locationController.log)
 app.post('/api/interest/get', tokenValidator, interestController.getInterest)
 app.post('/api/interest/add', tokenValidator, interestController.addInterest)
+app.get('/api/interest/all', tokenValidator, interestController.getAll)
 module.exports = app

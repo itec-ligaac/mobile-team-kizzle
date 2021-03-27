@@ -15,6 +15,10 @@ const locationSchema = new Schema({
   interest: {
     type: Array,
     require: true,
+  },
+  city: {
+    type: Array, 
+    require: true  
   }
 })
 
