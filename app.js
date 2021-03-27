@@ -2,6 +2,7 @@
 const express = require('express')
 const passport = require('passport')
 const mongoose = require('mongoose')
+const cors = require('cors')
 const { mongoPath, mongoDatabase } = require('./config')
 const authController = require('./controllers/auth')
 const userController = require('./controllers/user')
