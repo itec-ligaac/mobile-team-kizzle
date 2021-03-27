@@ -31,7 +31,7 @@ const app = express()
 app.use(express.urlencoded({
     extended: true
 }))
-app.use(cors({origin: '*'}))
+app.use(cors({origin: 'http://localhost:8100', credentials: true}))
 app.use(passport.initialize())
 app.use(express.json())
 
