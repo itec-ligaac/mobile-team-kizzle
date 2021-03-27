@@ -7,8 +7,8 @@ const authController = require('./controllers/auth')
 const userController = require('./controllers/user')
 const locationController = require('./controllers/location')
 
-const passportLocalConfing = require('./passport-local')
-const passportJwtConfig = require('./passport-jwt')
+const localConfig = require('./passportConfig/passport-local')
+const jwtConfig = require('./passportConfig/passport-jwt')
 
 mongoose.Promise = global.Promise
 console.log(`${mongoPath}/${mongoDatabase}`)
