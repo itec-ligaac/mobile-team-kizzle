@@ -1,9 +1,7 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema
 
 const locationSchema = new Schema({
-
   lat: {
     type: Number,
     required: true,

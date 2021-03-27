@@ -7,6 +7,7 @@ const { mongoPath, mongoDatabase } = require('./config')
 const authController = require('./controllers/auth')
 const userController = require('./controllers/user')
 const locationController = require('./controllers/location')
+const interestController = require('./controllers/interest')
 
 const localConfig = require('./passportConfig/passport-local')
 const jwtConfig = require('./passportConfig/passport-jwt')
@@ -45,7 +46,7 @@ const tokenValidator = passport.authenticate('jwt', {
 app.post('/api/auth/register', authController.register)
 app.post('/api/auth/login', localValidator, authController.login)
 app.get('/api/user/me', tokenValidator, userController.me)
-
 app.post('/api/location/log', tokenValidator, locationController.log)
-
+app.post('/api/interest/get', tokenValidator, interestController.getInterest)
+app.post('/api/interest/add', tokenValidator, interestController.addInterest)
 module.exports = app
