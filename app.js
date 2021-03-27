@@ -32,7 +32,7 @@ const app = express()
 app.use(express.urlencoded({
     extended: true
 }))
-app.use(cors({origin: 'http://localhost:8100', credentials: true}))
+app.use(cors({origin: 'http://localhost', credentials: true}))
 app.use(passport.initialize())
 app.use(express.json())
 
@@ -54,4 +54,6 @@ app.post('/api/location/all', tokenValidator, locationController.map)
 app.post('/api/interest/get', tokenValidator, interestController.getInterest)
 app.post('/api/interest/add', tokenValidator, interestController.addInterest)
 app.get('/api/interest/all', tokenValidator, interestController.getAll)
+
+app.post('/api/misc/autocomplete', tokenValidator, locationController.autocomplete)
 module.exports = app

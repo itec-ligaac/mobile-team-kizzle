@@ -56,7 +56,20 @@ module.exports = {
 			city,
 			interest,
 		}, function(err, obj) {
+            console.log(city)
             return res.status(200).json({message: obj, error: false})
         })
-	}
+	},
+    autocomplete: async (req, res) => {
+        const {
+            search_item
+        } = req.body
+        await axios.get(`https://autocomplete.search.hereapi.com/v1/autocomplete?q=${search_item}`, {
+			headers: {
+				Authorization: "Bearer " + HERE_maps_bearer_key,
+			},
+		}).then((response) => {
+            res.status(200).json({message: response.data, error: false})
+		})
+    }
 }

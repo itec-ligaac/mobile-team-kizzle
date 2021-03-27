@@ -15,6 +15,11 @@ const interestSchema = new Schema({
   image: {
     type: String,
     require: true,
+  },
+
+  color: {
+    type: String,
+    require: true
   }
 })
 

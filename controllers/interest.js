@@ -14,11 +14,12 @@ module.exports = {
     },
     //internal API
     addInterest: async(req, res) => {
-        const { uid, name, image } = req.body
+        const { uid, name, image, color } = req.body
         const interest = new interestModel({
             uid, 
             name,
-            image
+            image,
+            color
         })
         await interest.save()
         return res.status(200).json({message: "Interest saved!", error: false})
