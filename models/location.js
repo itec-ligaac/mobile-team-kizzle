@@ -17,7 +17,7 @@ const locationSchema = new Schema({
     require: true,
   },
   city: {
-    type: Array, 
+    type: String, 
     require: true  
   }
 })

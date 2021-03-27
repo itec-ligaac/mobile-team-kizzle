@@ -45,8 +45,12 @@ const tokenValidator = passport.authenticate('jwt', {
 
 app.post('/api/auth/register', authController.register)
 app.post('/api/auth/login', localValidator, authController.login)
+
 app.get('/api/user/me', tokenValidator, userController.me)
+
 app.post('/api/location/log', tokenValidator, locationController.log)
+app.post('/api/location/all', tokenValidator, locationController.map)
+
 app.post('/api/interest/get', tokenValidator, interestController.getInterest)
 app.post('/api/interest/add', tokenValidator, interestController.addInterest)
 app.get('/api/interest/all', tokenValidator, interestController.getAll)
