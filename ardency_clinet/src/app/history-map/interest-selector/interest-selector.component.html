@@ -1,6 +1,4 @@
 <div class="selector">
-  <div *ngFor="let interest of interests" style="display: inline-flex;">
-    <div class="item" [class.selected]="selected.includes(interest.id)" (click)="select(interest.id)" [style.background]=interest.color>
-    </div>
+  <div #selector style="display: inline-flex;">
   </div>
 </div>

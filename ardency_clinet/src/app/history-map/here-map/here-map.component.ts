@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Coordinates } from '@ionic-native/geolocation/ngx';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 let H = window['H'];
@@ -19,19 +20,27 @@ export class HereMapComponent implements OnInit {
   @Input('location') public location: BehaviorSubject<[any,any]>;
   @Input('zoom') public zoom: BehaviorSubject<number>;
 
+  @Input('interest') public interest: BehaviorSubject<string>;
+  @Input('color') public color: BehaviorSubject<string>;
+
+
 
   public platform:any;
   public map:any;
   public defaultLayers:any;
   public routing:any;
+  public points = new BehaviorSubject<[any]>([null]);
 
-  constructor() { }
+  constructor(private nativeStorage: NativeStorage) { }
 
   ngOnInit() {}
 
   drawHeatMap(map,coords){
-    for(var i=0;i<coords.length;i++){
-      this.drawCircle(map,coords[i][0],coords[i][1]);
+    this.clearMap(map);
+    if(coords.length>1){
+      for(var i=1;i<coords.length;i++){
+        this.drawCircle(map,coords[i][0],coords[i][1]);
+      }
     }
   }
 
@@ -40,18 +49,64 @@ export class HereMapComponent implements OnInit {
       // The central point of the circle
       {lat:lat, lng:lng},
       // The radius of the circle in meters
-      1000,
+      100,
       {
         style: {
           strokeColor: 'rgba(0, 0, 0, 0)', // Color of the perimeter
           lineWidth: 3,
-          fillColor: 'rgba(0, 128, 0, 0.5)'  // Color of the circle
+          fillColor: 'rgba('+this.color.getValue()+', 0.1)'  // Color of the circle
         }
       }
     ));
   }
 
+  clearMap(map){
+    for (var object of map.getObjects()){
+      map.removeObject(object);
+    }
+  }
+
+  getInterestPoints(id:string){
+
+    this.nativeStorage.getItem('jwt').then(data=>{
+      var points = [];
+
+      var http = new XMLHttpRequest();
+      var url = 'http://milsugi.tech:5000/api/location/all';
   
+      var location = this.location.getValue();
+
+      var params = 'interest='+this.interest.getValue()+"&lat="+location[0]+"&long="+location[1];
+  
+      http.open('POST', url, true);
+  
+      
+      http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+      http.setRequestHeader('Authorization', data);
+  
+  
+      http.onreadystatechange = ()=> {
+          if(http.readyState == 4 && http.status == 200) {
+              if(JSON.parse(http.responseText)){
+                var response = JSON.parse(http.responseText).message;
+
+                var points = this.points.getValue();
+
+                for(var i=0;i<response.length;i++){
+                  points.push([response[i].lat,response[i].long]);
+                }
+                this.points.next(points);
+
+              }
+          }else{
+            console.log(http.status);
+          }
+      }
+      http.withCredentials = true;
+      http.send(params);
+  
+    });
+  }
 
   ngAfterViewInit() {
 
@@ -84,7 +139,6 @@ export class HereMapComponent implements OnInit {
       
 
       this.location.subscribe((val)=>{
-        this.drawHeatMap(this.map,[[this.location.getValue()[0],this.location.getValue()[1]],[this.location.getValue()[0]+0.1,this.location.getValue()[1]+0.2]]);
         this.map.setCenter({lat:val[0], lng:val[1]});
       });
 
@@ -92,7 +146,13 @@ export class HereMapComponent implements OnInit {
         this.map.setZoom(val);
       });
 
-     
+      this.interest.subscribe((val)=>{
+        this.getInterestPoints(val);
+      });
+
+      this.points.subscribe((val)=>{
+        this.drawHeatMap(this.map,val);
+      });
      
 
     },2000);

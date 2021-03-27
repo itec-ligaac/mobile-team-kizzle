@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Component({
@@ -8,22 +8,35 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 })
 export class InterestSelectorComponent implements OnInit {
 
-  @Input('multiple') public multiple: boolean;
+  @Input('selectable') public selectable: boolean;
+  @Input('interests') public interests: BehaviorSubject<any>;
 
-  private selected = [];
-  private interests = [{"id":1,"name":"test","color":"red"},{"id":2,"name":"test2","color":"blue"},{"id":3,"name":"test2","color":"pink"}]
+
+  @Input('selected') public selected: any;
+  @Input('color') public color: any;
+
+  @ViewChild("selector") public selector: ElementRef;
 
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.interests.subscribe((val)=>{
+      if(val){
+        this.load(val);
+      }
+    });
+  }
 
-  select(id:number){
-    if(this.selected.includes(id)==false){
-      this.selected.push(id);
-    }else{
-      var index = this.selected.indexOf(id);
-      this.selected.splice(index, 1);
+  load(data){
+    console.log(data);
+    this.selector.nativeElement.innerHTML+='<div class="item" [class.selected]="selected.getValue()=='+data.messsage.uid+'" (click)="select('+data.messsage.uid+','+data.messsage.color+')" style.background="background:rgb('+data.messsage.color+')" ></div>';
+  }
+
+  select(id:string,color:string){
+    if(this.selectable){
+      this.color.next(color);
+      this.selected.next(id);
     }
   }
 
