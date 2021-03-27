@@ -25,7 +25,7 @@ module.exports = {
     },
     getAll: async(req, res) => {
         interestModel.find({}, function(err, obj) {
-            
+            res.status(200).json({message: obj, error: false})
         })
     }
 }
