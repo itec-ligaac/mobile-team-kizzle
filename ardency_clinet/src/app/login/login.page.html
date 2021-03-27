@@ -1,9 +1,5 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-
+  <ion-input placeholder="Email" type="text" [(ngModel)]="email"></ion-input>
+  <ion-input placeholder="Password" type="password" [(ngModel)]="password"></ion-input>
+  <ion-button shape="round" expand="block" (click)="login()">Login</ion-button>
 </ion-content>

@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Coordinates } from '@ionic-native/geolocation/ngx';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 let H = window['H'];
@@ -28,6 +29,30 @@ export class HereMapComponent implements OnInit {
 
   ngOnInit() {}
 
+  drawHeatMap(map,coords){
+    for(var i=0;i<coords.length;i++){
+      this.drawCircle(map,coords[i][0],coords[i][1]);
+    }
+  }
+
+  drawCircle(map,lat,lng){
+    map.addObject(new H.map.Circle(
+      // The central point of the circle
+      {lat:lat, lng:lng},
+      // The radius of the circle in meters
+      1000,
+      {
+        style: {
+          strokeColor: 'rgba(0, 0, 0, 0)', // Color of the perimeter
+          lineWidth: 3,
+          fillColor: 'rgba(0, 128, 0, 0.5)'  // Color of the circle
+        }
+      }
+    ));
+  }
+
+  
+
   ngAfterViewInit() {
 
     
@@ -38,6 +63,8 @@ export class HereMapComponent implements OnInit {
       });
   
       this.defaultLayers = this.platform.createDefaultLayers();
+
+      
 
       var loc = this.location.getValue();
 
@@ -54,8 +81,10 @@ export class HereMapComponent implements OnInit {
 
       let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
 
+      
 
       this.location.subscribe((val)=>{
+        this.drawHeatMap(this.map,[[this.location.getValue()[0],this.location.getValue()[1]],[this.location.getValue()[0]+0.1,this.location.getValue()[1]+0.2]]);
         this.map.setCenter({lat:val[0], lng:val[1]});
       });
 

@@ -9,8 +9,9 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 export class InterestSelectorComponent implements OnInit {
 
   @Input('multiple') public multiple: boolean;
-  @Input('selected') public selected: BehaviorSubject<[number]>;
 
+  private selected = [];
+  private interests = [{"id":1,"name":"test","color":"red"},{"id":2,"name":"test2","color":"blue"},{"id":3,"name":"test2","color":"pink"}]
 
 
   constructor() { }
@@ -18,10 +19,11 @@ export class InterestSelectorComponent implements OnInit {
   ngOnInit() {}
 
   select(id:number){
-    var selected = this.selected.getValue();
-    if(selected.includes(id)==false){
-      selected.push(id);
-      this.selected.next(selected);
+    if(this.selected.includes(id)==false){
+      this.selected.push(id);
+    }else{
+      var index = this.selected.indexOf(id);
+      this.selected.splice(index, 1);
     }
   }
 
