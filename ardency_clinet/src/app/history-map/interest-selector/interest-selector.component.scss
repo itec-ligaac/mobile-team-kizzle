@@ -1,0 +1,19 @@
+.selector{
+    height: 10vh;
+    width: 100vw;
+    background-color: white;
+    position: absolute;
+    left:0;
+    bottom:0;
+}
+
+.item{
+    margin:1vh;
+    height: 8vh;
+    width: 8vh;
+    border-radius: 50px;
+}
+
+.selected{
+    border:5px solid black;
+}
