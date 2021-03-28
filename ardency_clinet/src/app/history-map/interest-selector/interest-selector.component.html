@@ -1,4 +1,6 @@
-<div class="selector">
-  <div #selector style="display: inline-flex;">
+<div class="selector" *ngIf="data!=null">
+  <div *ngFor="let interest of data" style="display: inline-flex;">
+    <div class="item" [class.selected]="selected.getValue()==interest.uid" (click)="select(interest.uid,interest.color)" [style.background]="interest.color2" >
+    </div>
   </div>
 </div>

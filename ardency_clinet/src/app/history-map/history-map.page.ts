@@ -28,13 +28,12 @@ export class HistoryMapPage implements OnInit {
     this.nativeStorage.getItem('jwt').then(data=>{
 
       var http = new XMLHttpRequest();
-      var url = 'http://milsugi.tech:5000/api/interest/get/';
+      var url = 'http://milsugi.tech:5000/api/interest/all';
   
       var location = this.location.getValue();
 
-      var params = 'interest='+this.interest.getValue()+"&lat="+location[0]+"&long="+location[1];
   
-      http.open('POST', url, true);
+      http.open('GET', url, true);
   
       
       http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -51,7 +50,7 @@ export class HistoryMapPage implements OnInit {
           }
       }
       http.withCredentials = true;
-      http.send(params);
+      http.send();
   
     });
   }
@@ -69,13 +68,14 @@ export class HistoryMapPage implements OnInit {
 
   ngOnInit() {
     this.auth.getProfile();
+    this.loadInterests();
   }
 
   ngAfterViewInit(){
     setTimeout(()=>{
       this.zoom.next(20);
       this.interest.next('3a53df66-b5ad-44f4-b7fe-6753c209fa5f');
-    },6000);
+    },2000);
   }
 
  
